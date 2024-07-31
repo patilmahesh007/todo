@@ -1,11 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>todo</title>
+    <title>To-Do List</title>
+    <style>
+        .todo-item {
+            border: 2px solid black;
+            padding: 5px;
+            margin: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 7px;
+            height: 30px;
+        }
+
+        .btn {
+            background-color: crimson;
+            color: white;
+            border: none;
+            border-radius: 10%;
+            cursor: pointer;
+        }
+    </style>
 </head>
+
 <body>
-    
+    <h1>Tasks</h1>
+    <div id="display" class="display"></div>
+
+ 
+
+
+    <script>
+        let todo = ["eat", "sleep", "repeat"];
+        let display = document.getElementById("display");
+
+        function loadTasks() {
+            display.innerHTML = ''; 
+            for (let to of todo) {
+                display.innerHTML += `
+                    <div class="todo-item">${to}
+                        <button class="btn" onclick="deleteTask('${to}')">Remove Task</button>
+                    </div>`;
+            }
+        }
+
+        function deleteTask(to) {
+            let taskIndex = todo.indexOf(to);
+            if (taskIndex > -1) {
+                todo.splice(taskIndex, 1);
+                loadTasks(); // Re-render the tasks after deletion
+            }
+        }
+
+        // Initial load of tasks
+        loadTasks();
+    </script>
 </body>
+
 </html>
