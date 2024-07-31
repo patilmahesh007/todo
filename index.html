@@ -30,16 +30,27 @@
 <body>
     <h1>Tasks</h1>
     <div id="display" class="display"></div>
+    <input type="text" id="task-inp">
+    <button onclick="taskinput()"> add</button>
 
- 
+
 
 
     <script>
-        let todo = ["eat", "sleep", "repeat"];
+        let todo = [];
         let display = document.getElementById("display");
 
-        function loadTasks() {
-            display.innerHTML = ''; 
+        function loadFromLocalStorage() {
+            const allTasks = JSON.parse(localStorage.getItem('localtodo'))
+            if (allTasks)
+                todo.push(...allTasks)
+        }
+        loadFromLocalStorage()
+
+        function loadTasks() {//to insert in local storage
+            localStorage.setItem('localtodo', JSON.stringify(todo))
+
+            display.innerHTML = '';
             for (let to of todo) {
                 display.innerHTML += `
                     <div class="todo-item">${to}
@@ -52,12 +63,24 @@
             let taskIndex = todo.indexOf(to);
             if (taskIndex > -1) {
                 todo.splice(taskIndex, 1);
-                loadTasks(); // Re-render the tasks after deletion
+                loadTasks();
             }
         }
 
-        // Initial load of tasks
         loadTasks();
+        function taskinput() {
+            const input = document.getElementById('task-inp')
+            const inputvalue = document.getElementById('task-inp').value
+            if (!inputvalue) {
+                alert('please enter value')
+                return;
+            }
+            todo.push(inputvalue)
+            loadTasks()
+            input.value = ''
+
+        }
+
     </script>
 </body>
 
